@@ -2,6 +2,10 @@ import urllib3
 from bs4 import BeautifulSoup
 from page import *
 
+
+host_name = 'https://en.wikipedia.org/wiki/Special:Search?search='
+search_results = []
+
 urllib3.disable_warnings() #temporary fix
 http = urllib3.PoolManager()
 
@@ -10,7 +14,7 @@ if __name__ == '__main__':
     # print(url)
     page_name = page_name.replace(' ', '+')
     # print(page_name)
-    page = http.request('GET', 'https://en.wikipedia.org/wiki/Special:Search?search='+page_name)
+    page = http.request('GET', host_name+page_name)
     # print(page.data)
     parser = BeautifulSoup(page.data, 'html.parser')
     # print(parser.title.text)
@@ -19,4 +23,8 @@ if __name__ == '__main__':
         Pg = Page(parser)
         Pg.printText()
     else:
-        print('Need to search')
+        for ind, div in enumerate(parser.find_all('div', {'class': 'mw-search-result-heading'})):
+            title = div.text
+            link = div.a['href']
+            search_results.append({'title': title, 'link': link})
+            print(str(ind)+' :: '+title)
