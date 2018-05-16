@@ -4,7 +4,8 @@ import page
 import search
 
 
-host_name = 'https://en.wikipedia.org/wiki/Special:Search?search='
+host_name = 'https://en.wikipedia.org'
+special_search_strt = '/wiki/Special:Search?search='
 # search_results = []
 
 urllib3.disable_warnings() #temporary fix
@@ -19,7 +20,7 @@ if __name__ == '__main__':
     # print(url)
     page_name = page_name.replace(' ', '+')
     # print(page_name)
-    response = http.request('GET', host_name+page_name)
+    response = http.request('GET', host_name+special_search_strt+page_name)
     # print(page.data)
     parser = BeautifulSoup(response.data, 'html.parser')
     # print(parser.title.text)
@@ -38,4 +39,12 @@ if __name__ == '__main__':
         #     search_results.append({'title': title, 'link': link})
         #     print(str(ind)+' :: '+title)
         SearchObject = search.Search(page_name)
+        # for i in range(20):
+            # SearchObject.display_next()
+        # SearchObject.display_prev()
+        # SearchObject.display_prev()
         SearchObject.display_next()
+        # SearchObject.display_prev()
+        # SearchObject.display_next()
+        Pg = SearchObject.select(3)
+        Pg.printText()
