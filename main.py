@@ -19,7 +19,7 @@ columns = int(columns)
 
 if __name__ == '__main__':
     os.system('clear')
-    version = '0.0.1.6'
+    version = '0.0.1.7'
     break_string = '\n\n======================================================================\n\n'
 
     print(break_string)
