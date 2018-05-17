@@ -12,6 +12,10 @@ special_search_strt = '/wiki/Special:Search?search='
 urllib3.disable_warnings()
 http = urllib3.PoolManager()
 
+rows, columns = os.popen('stty size', 'r').read().split()
+rows = int(rows)
+columns = int(columns)
+
 
 if __name__ == '__main__':
     os.system('clear')
@@ -33,7 +37,7 @@ if __name__ == '__main__':
         if ind == -1:
             Pg = page.Page(parser)
             print(break_string)
-            Pg.printText()
+            print(Pg.printText())
             print(break_string)
 
             print('Press q to go back to search mode')
@@ -43,7 +47,7 @@ if __name__ == '__main__':
         else:
             SearchObject = search.Search(page_name)
             print(break_string)
-            SearchObject.display_next()
+            print(SearchObject.display_next())
             print(break_string)
             print('Could not find such a page top 10 search results are displayed above')
             print('Press right arrow: next 10 results, left arrow: previous 10 results, s: select one of the result, q: quit searching')
@@ -52,18 +56,18 @@ if __name__ == '__main__':
                 cmd = readchar.readkey()
                 if cmd == '\x1b[C':
                     print(break_string)
-                    SearchObject.display_next()
+                    print(SearchObject.display_next())
                     print(break_string)
                 elif cmd == '\x1b[D':
                     print(break_string)
-                    SearchObject.display_prev()
+                    print(SearchObject.display_prev())
                     print(break_string)
                 elif cmd == 's':
                     try:
                         idx = int(input("Enter the page search number :: "))
                         Pg = SearchObject.select(idx)
                         print(break_string)
-                        Pg.printText()
+                        print(Pg.printText())
                         print(break_string)
 
                         print('Press q to go back to search mode')

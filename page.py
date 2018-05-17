@@ -12,5 +12,4 @@ class Page:
             self.parser = page
 
     def printText(self):
-        print(self.parser.text)
-        
+        return self.parser.text

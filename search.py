@@ -24,6 +24,7 @@ class Search:
 
 
     def display_next(self, num = 10):
+        output_str = ''
         while self.curr_offset + num > len(self.search_results):
             self.offset += self.search_limit
             search_string = '&limit='+str(self.search_limit)+'&offset='+str(self.offset)
@@ -37,19 +38,22 @@ class Search:
                 self.search_results.append({'title': title, 'link': link})
 
         for i in range(self.curr_offset, self.curr_offset+num):
-            print(str(i+1)+' :: '+self.search_results[i]['title']+' '+self.search_results[i]['link'])
+            output_str += str(i+1)+' :: '+self.search_results[i]['title']+'\n'
 
         self.curr_offset += num
+        return output_str
 
 
     def display_prev(self, num = 10):
+        output_str = ''
         if self.curr_offset - num < 0:
-            return
+            return output_str
 
         for i in range(self.curr_offset-num, self.curr_offset):
-            print(str(i+1)+' :: '+self.search_results[i]['title'])
+            output_str += str(i+1)+' :: '+self.search_results[i]['title']+'\n'
 
         self.curr_offset -= num
+        return output_str
 
 
     def select(self, ind):
