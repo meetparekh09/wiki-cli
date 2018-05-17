@@ -1,4 +1,5 @@
 import urllib3
+import os
 import readchar
 from bs4 import BeautifulSoup
 import page
@@ -13,7 +14,8 @@ http = urllib3.PoolManager()
 
 
 if __name__ == '__main__':
-    version = '0.0.1.5'
+    os.system('clear')
+    version = '0.0.1.6'
     break_string = '\n\n======================================================================\n\n'
 
     print(break_string)
@@ -33,13 +35,18 @@ if __name__ == '__main__':
             print(break_string)
             Pg.printText()
             print(break_string)
+
+            print('Press q to go back to search mode')
+            cmd = readchar.readkey()
+            while cmd != 'q':
+                cmd = readchar.readkey()
         else:
             SearchObject = search.Search(page_name)
             print(break_string)
             SearchObject.display_next()
             print(break_string)
             print('Could not find such a page top 10 search results are displayed above')
-            print('Press right arrow: next 10 results, left arrow: previous 10 results, q: quit searching')
+            print('Press right arrow: next 10 results, left arrow: previous 10 results, s: select one of the result, q: quit searching')
             cmd = '_'
             while cmd != 'q':
                 cmd = readchar.readkey()
@@ -51,5 +58,22 @@ if __name__ == '__main__':
                     print(break_string)
                     SearchObject.display_prev()
                     print(break_string)
+                elif cmd == 's':
+                    try:
+                        idx = int(input("Enter the page search number :: "))
+                        Pg = SearchObject.select(idx)
+                        print(break_string)
+                        Pg.printText()
+                        print(break_string)
 
+                        print('Press q to go back to search mode')
+                        cmd = readchar.readkey()
+                        while cmd != 'q':
+                            cmd = readchar.readkey()
+                        break
+                    except ValueError:
+                        print("Error :: You need to enter an appropriate integer!")
+
+
+        os.system('clear')
         page_name = input("wikipedia.org$ ")
