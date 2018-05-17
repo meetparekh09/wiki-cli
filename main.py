@@ -19,7 +19,14 @@ columns = int(columns)
 
 display_size = rows*columns - 3*columns
 
-output_buffer = 'hello world how are you doing?'*500
+output_buffer = '\thello world how are you doing?\n'*100
+
+
+output_buffer = output_buffer.replace('\t', ' '*4)
+output_buffer_split = output_buffer.split('\n')
+output_buffer = ''
+for line in output_buffer_split:
+    output_buffer += line + ' '*(columns - len(line))
 # output_buffer = []
 
 # for c in output:
@@ -39,6 +46,7 @@ while cmd != 'q':
     sys.stdout.flush()
     cmd = readchar.readkey()
 
+os.system('clear')
 
 # if __name__ == '__main__':
 #     os.system('clear')
