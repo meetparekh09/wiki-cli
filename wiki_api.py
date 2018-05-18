@@ -18,7 +18,7 @@ host_name = 'https://en.wikipedia.org/wiki/'
 # print(response['query'])
 
 
-def searchQuery(srsearch, sroffset, srlimit):
+def searchQuery(srsearch, sroffset = 0, srlimit = 10):
     search_query = {'action': 'query', 'list': 'search', 'format': 'json', 'srsearch': srsearch, 'sroffset': sroffset, 'srlimit': srlimit}
     response = requests.get(api_url, params = search_query).json()
     results = response['query']['search']
@@ -26,7 +26,7 @@ def searchQuery(srsearch, sroffset, srlimit):
     search_results = []
     for result in results:
         search_results.append({'title': result['title'], 'link': host_name+result['title'].replace(' ', '_')})
-    return search_results
+    return (limit, search_results)
 
 
 if __name__ == '__main__':

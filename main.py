@@ -5,6 +5,7 @@ import readchar
 from bs4 import BeautifulSoup
 import page
 import search
+import wiki_api
 
 host_name = 'https://en.wikipedia.org'
 special_search_strt = '/wiki/Special:Search?search='
@@ -63,13 +64,10 @@ if __name__ == '__main__':
 
     page_name = input("wikipedia.org$ ")
     while page_name != 'exit':
-        page_name = page_name.replace(' ', '+')
-        response = http.request('GET', host_name+special_search_strt+page_name)
-        parser = BeautifulSoup(response.data, 'html.parser')
+        (limit, results) = wiki_api.searchQuery(page_name)
 
-        ind = parser.title.text.find('Search results')
-        if ind == -1:
-            Pg = page.Page(parser)
+        if limit == 1:
+            Pg = page.Page(page_name)
             output_str = break_string + Pg.printText() + break_string
             handle_long_output(output_str)
 
