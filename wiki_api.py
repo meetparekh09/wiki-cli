@@ -22,6 +22,7 @@ def searchQuery(srsearch, sroffset, srlimit):
     search_query = {'action': 'query', 'list': 'search', 'format': 'json', 'srsearch': srsearch, 'sroffset': sroffset, 'srlimit': srlimit}
     response = requests.get(api_url, params = search_query).json()
     results = response['query']['search']
+    limit = response['query']['searchinfo']['totalhits']
     search_results = []
     for result in results:
         search_results.append({'title': result['title'], 'link': host_name+result['title'].replace(' ', '_')})
