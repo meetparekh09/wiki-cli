@@ -2,6 +2,7 @@ import urllib3
 from bs4 import BeautifulSoup
 import main
 import page
+import wiki_api
 
 
 class Search:
@@ -17,28 +18,18 @@ class Search:
         response = main.http.request('GET', main.host_name+main.special_search_strt+self.page_name+search_string)
         parser = BeautifulSoup(response.data, 'html.parser')
 
-        for div in parser.find_all('div', {'class': 'mw-search-result-heading'}):
-            title = div.text
-            link = div.a['href']
-            self.search_results.append({'title': title, 'link': link})
+        self.search_results = wiki_api.searchQuery(self.page_name, self.offset, self.search_limit)
 
 
     def display_next(self, num = 10):
         output_str = ''
         while self.curr_offset + num > len(self.search_results):
             self.offset += self.search_limit
-            search_string = '&limit='+str(self.search_limit)+'&offset='+str(self.offset)
-
-            response = main.http.request('GET', main.host_name+main.special_search_strt+self.page_name+search_string)
-            parser = BeautifulSoup(response.data, 'html.parser')
-
-            for div in parser.find_all('div', {'class': 'mw-search-result-heading'}):
-                title = div.text
-                link = div.a['href']
-                self.search_results.append({'title': title, 'link': link})
+            results = wiki_api.searchQuery(self.page_name, self.offset, self.search_limit)
+            self.search_results.extend(results)
 
         for i in range(self.curr_offset, self.curr_offset+num):
-            output_str += str(i+1)+' :: '+self.search_results[i]['title']+'\n'
+            output_str += str(i+1)+' :: '+self.search_results[i]['title']+self.search_results[i]['link']+'\n'
 
         self.curr_offset += num
         return output_str
@@ -58,21 +49,21 @@ class Search:
 
     def select(self, ind):
         if ind >= len(self.search_results):
-            search_string = '&limit='+str(1)+'&offset='+str(ind-1)
-            response = main.http.request('GET', main.host_name+main.special_search_strt+self.page_name+search_string)
-            parser = BeautifulSoup(response.data, 'html.parser')
-            headings = parser.find_all('div', {'class': 'mw-search-result-heading'})
-            if len(headings) == 0:
+            results = wiki_api.searchQuery(self.page_name, ind-1, 1)
+            # response = main.http.request('GET', main.host_name+main.special_search_strt+self.page_name+search_string)
+            # parser = BeautifulSoup(response.data, 'html.parser')
+            # headings = parser.find_all('div', {'class': 'mw-search-result-heading'})
+            if len(results) == 0:
                 print('Your request cannot be satisfied')
                 return
             else:
-                link = headings[0].a['href']
-                response = main.http.request('GET', main.host_name+link)
+                link = results[0]['link']
+                response = main.http.request('GET', link)
                 parser = BeautifulSoup(response.data, 'html.parser')
                 return page.Page(parser)
 
 
         link = self.search_results[ind-1]['link']
-        response = main.http.request('GET', main.host_name+link)
+        response = main.http.request('GET', link)
         parser = BeautifulSoup(response.data, 'html.parser')
         return page.Page(parser)
