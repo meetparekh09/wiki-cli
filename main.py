@@ -64,6 +64,12 @@ if __name__ == '__main__':
 
     page_name = input("wikipedia.org$ ")
     while page_name != 'exit':
+
+        if page_name == 'reset' or page_name == 'clear':
+            os.system('clear')
+            page_name = input("wikipedia.org$ ")
+            continue
+
         (limit, results) = wiki_api.searchQuery(page_name)
 
         if limit == 1:
