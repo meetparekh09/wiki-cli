@@ -12,4 +12,22 @@ class Page:
             self.parser = page
 
     def printText(self):
-        return self.parser.text
+        div = self.parser.findAll('div', {'class': 'mw-parser-output'})
+        return div[0].text
+
+    def getSections(self):
+        sections = []
+        headings = self.parser.findAll('h2')
+
+        print(headings)
+
+        for heading in headings:
+            sections.extend(heading.find_all('span', {'class': 'mw-headline'}))
+
+        print(sections)
+
+        output = ''
+        for section in sections:
+            output += section.text+'\n'
+
+        return output

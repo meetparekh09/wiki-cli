@@ -54,7 +54,7 @@ def handle_long_output(output_buffer):
 
 if __name__ == '__main__':
     os.system('clear')
-    version = '0.0.1.8'
+    version = '0.0.2.2'
     break_string = '\n\n======================================================================\n\n'
 
     print(break_string)
@@ -68,7 +68,7 @@ if __name__ == '__main__':
 
         if limit == 1:
             Pg = page.Page(page_name)
-            output_str = break_string + Pg.printText() + break_string
+            output_str = break_string + Pg.getSections() + break_string
             handle_long_output(output_str)
 
         else:
@@ -98,7 +98,7 @@ if __name__ == '__main__':
                     try:
                         idx = int(input("Enter the page search number :: "))
                         Pg = SearchObject.select(idx)
-                        output_str = break_string+Pg.printText()+break_string
+                        output_str = break_string+Pg.getSections()+break_string
                         handle_long_output(output_str)
                         break
 
