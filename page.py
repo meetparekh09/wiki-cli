@@ -11,23 +11,22 @@ class Page:
         else:
             self.parser = page
 
+        self.title = self.parser.findAll('h1', {'class': 'firstHeading'})[0]
+
     def printText(self):
         div = self.parser.findAll('div', {'class': 'mw-parser-output'})
         return div[0].text
 
     def getSections(self):
-        sections = []
+        self.sections = []
         headings = self.parser.findAll('h2')
 
-        print(headings)
-
         for heading in headings:
-            sections.extend(heading.find_all('span', {'class': 'mw-headline'}))
+            self.sections.extend(heading.find_all('span', {'class': 'mw-headline'}))
 
-        print(sections)
 
         output = ''
-        for section in sections:
+        for section in self.sections:
             output += section.text+'\n'
 
         return output
@@ -49,5 +48,13 @@ class Page:
                 break
 
             travel.decompose()
+
+        return output
+
+    def getSummary(self):
+        output = ''
+        output += self.title.text + '\n\n'
+
+        output += self.getNextSection()
 
         return output

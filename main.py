@@ -54,7 +54,7 @@ def handle_long_output(output_buffer):
 
 if __name__ == '__main__':
     os.system('clear')
-    version = '0.0.2.2'
+    version = '0.0.2.5'
     break_string = '\n\n======================================================================\n\n'
 
     print(break_string)
@@ -98,7 +98,7 @@ if __name__ == '__main__':
                     try:
                         idx = int(input("Enter the page search number :: "))
                         Pg = SearchObject.select(idx)
-                        output_str = break_string+Pg.getNextSection()+break_string
+                        output_str = break_string+Pg.getSummary()+break_string
                         handle_long_output(output_str)
                         break
 
