@@ -31,3 +31,23 @@ class Page:
             output += section.text+'\n'
 
         return output
+
+
+    def getNextSection(self):
+        output = ''
+        content = self.parser.findAll('div', {'class': 'mw-parser-output'})[0]
+
+        while True:
+            travel = content
+
+            while travel.name != 'p' and travel.name != 'h2':
+                travel = travel.next
+
+            if travel.name == 'p':
+                output += travel.text + '\n'
+            elif len(travel.find_all('span')) != 0:
+                break
+
+            travel.decompose()
+
+        return output

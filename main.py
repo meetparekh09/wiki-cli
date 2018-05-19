@@ -98,7 +98,7 @@ if __name__ == '__main__':
                     try:
                         idx = int(input("Enter the page search number :: "))
                         Pg = SearchObject.select(idx)
-                        output_str = break_string+Pg.getSections()+break_string
+                        output_str = break_string+Pg.getNextSection()+break_string
                         handle_long_output(output_str)
                         break
 
