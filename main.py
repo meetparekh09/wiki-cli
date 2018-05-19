@@ -25,7 +25,7 @@ display_size = rows*columns - 4*columns
 def handle_long_output(output_buffer):
     global rows, columns, display_size
 
-    output_buffer = output_buffer.replace('\t', '')
+    output_buffer = output_buffer.replace('\t', 8*'')
     output_buffer_split = output_buffer.split('\n')
     output_buffer = ''
     for line in output_buffer_split:
@@ -54,7 +54,7 @@ def handle_long_output(output_buffer):
 
 if __name__ == '__main__':
     os.system('clear')
-    version = '0.0.2.5'
+    version = '0.0.2.6'
     break_string = '\n\n======================================================================\n\n'
 
     print(break_string)
@@ -68,7 +68,7 @@ if __name__ == '__main__':
 
         if limit == 1:
             Pg = page.Page(page_name)
-            output_str = break_string + Pg.getSections() + break_string
+            output_str = break_string + Pg.printText() + break_string
             handle_long_output(output_str)
 
         else:
@@ -98,7 +98,7 @@ if __name__ == '__main__':
                     try:
                         idx = int(input("Enter the page search number :: "))
                         Pg = SearchObject.select(idx)
-                        output_str = break_string+Pg.getSummary()+break_string
+                        output_str = break_string+Pg.printText()+break_string
                         handle_long_output(output_str)
                         break
 

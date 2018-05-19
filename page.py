@@ -12,24 +12,44 @@ class Page:
             self.parser = page
 
         self.title = self.parser.findAll('h1', {'class': 'firstHeading'})[0]
+        self.sections = self.getSections()
+
+        self.sectionstitletext = [self.title.text]
+
+        for section in self.sections:
+            self.sectionstitletext.append(section.text)
+
+        self.sectionstext = []
+
+        for _ in range(len(self.sectionstitletext)):
+            self.sectionstext.append(self.getNextSection())
 
     def printText(self):
-        div = self.parser.findAll('div', {'class': 'mw-parser-output'})
-        return div[0].text
+        output = ''
+        for i in range(len(self.sectionstitletext)):
+            output += self.sectionstitletext[i] + '\n\n' + self.sectionstext[i] + '\n\n\n'
+
+        return output
 
     def getSections(self):
-        self.sections = []
+        sections = []
         headings = self.parser.findAll('h2')
 
         for heading in headings:
-            self.sections.extend(heading.find_all('span', {'class': 'mw-headline'}))
+            sections.extend(heading.find_all('span', {'class': 'mw-headline'}))
+
+        return sections
 
 
-        output = ''
-        for section in self.sections:
-            output += section.text+'\n'
-
-        return output
+    # def cleanString(self, text):
+    #     lines = text.split('\n')
+    #
+    #     for line in lines:
+    #         line.strip()
+    #
+    #     output = '\n'.join(lines)
+    #     print(output)
+    #     return '\n'.join(lines)
 
 
     def getNextSection(self):
@@ -39,22 +59,19 @@ class Page:
         while True:
             travel = content
 
+            if travel is None:
+                break
+            # print(travel)
             while travel.name != 'p' and travel.name != 'h2':
                 travel = travel.next
+                if travel is None:
+                    return output
 
             if travel.name == 'p':
                 output += travel.text + '\n'
             elif len(travel.find_all('span')) != 0:
+                travel.decompose()
                 break
 
             travel.decompose()
-
-        return output
-
-    def getSummary(self):
-        output = ''
-        output += self.title.text + '\n\n'
-
-        output += self.getNextSection()
-
         return output
