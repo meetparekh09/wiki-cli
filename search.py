@@ -1,4 +1,4 @@
-import urllib3
+import requests
 from bs4 import BeautifulSoup
 import main
 import page
@@ -50,12 +50,14 @@ class Search:
                 return
             else:
                 link = results[0]['link']
-                response = main.http.request('GET', link)
-                parser = BeautifulSoup(response.data, 'html.parser')
+                # response = main.http.request('GET', link)
+                response = requests.get(link)
+                parser = BeautifulSoup(response.text, 'html.parser')
                 return page.Page(parser)
 
 
         link = self.search_results[ind-1]['link']
-        response = main.http.request('GET', link)
-        parser = BeautifulSoup(response.data, 'html.parser')
+        # response = main.http.request('GET', link)
+        response = requests.get(link)
+        parser = BeautifulSoup(response.text, 'html.parser')
         return page.Page(parser)

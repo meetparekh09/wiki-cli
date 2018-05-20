@@ -1,4 +1,3 @@
-import urllib3
 import os
 import sys
 import readchar
@@ -9,10 +8,6 @@ import wiki_api
 
 host_name = 'https://en.wikipedia.org'
 special_search_strt = '/wiki/Special:Search?search='
-
-
-urllib3.disable_warnings()
-http = urllib3.PoolManager()
 
 rows, columns = os.popen('stty size', 'r').read().split()
 rows = int(rows)

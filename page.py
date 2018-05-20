@@ -6,8 +6,8 @@ class Page:
     """Holds data section for wikipedia page."""
     def __init__(self, page):
         if isinstance(page, str):
-            response = main.http.request('GET', main.host_name+page)
-            self.parser = BeautifulSoup(response.data, 'html.parser')
+            response = requests.get(main.host_name + page)
+            self.parser = BeautifulSoup(response.text, 'html.parser')
         else:
             self.parser = page
 
@@ -39,17 +39,6 @@ class Page:
             sections.extend(heading.find_all('span', {'class': 'mw-headline'}))
 
         return sections
-
-
-    # def cleanString(self, text):
-    #     lines = text.split('\n')
-    #
-    #     for line in lines:
-    #         line.strip()
-    #
-    #     output = '\n'.join(lines)
-    #     print(output)
-    #     return '\n'.join(lines)
 
 
     def getNextSection(self):
