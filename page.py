@@ -24,6 +24,8 @@ class Page:
         for _ in range(len(self.sectionstitletext)):
             self.sectionstext.append(self.getNextSection())
 
+        self.sectionstext[-1] = self.getReferences()
+
     def printText(self):
         output = ''
         for i in range(len(self.sectionstitletext)):
@@ -39,6 +41,15 @@ class Page:
             sections.extend(heading.find_all('span', {'class': 'mw-headline'}))
 
         return sections
+
+    def getReferences(self):
+        spans = self.parser.findAll('span', {'class': 'reference-text'})
+        spanText = ''
+
+        for span in spans:
+            spanText += span.text + '\n'
+
+        return spanText
 
 
     def getNextSection(self):
