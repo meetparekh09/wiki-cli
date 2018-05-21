@@ -20,6 +20,7 @@ display_size = rows*columns - 4*columns
 def handle_long_output(output_buffer):
     global rows, columns, display_size
 
+    original_output = output_buffer
     output_buffer = output_buffer.replace('\t', 8*'')
     output_buffer_split = output_buffer.split('\n')
     output_buffer = ''
@@ -34,6 +35,15 @@ def handle_long_output(output_buffer):
             current_display_ptr += columns
         if cmd == '\x1b[A':
             current_display_ptr -= columns
+        if cmd == 's':
+            path = input('specify the file path')
+            try:
+                f = open(path, 'w')
+                f.write(original_output)
+                f.close()
+            except:
+                print("Request could not be completed please check the file path")
+                continue
         os.system('clear')
         print(output_buffer[current_display_ptr:current_display_ptr+display_size]+'\n\n')
         if current_display_ptr+display_size >= len(output_buffer):
@@ -49,7 +59,7 @@ def handle_long_output(output_buffer):
 
 if __name__ == '__main__':
     os.system('clear')
-    version = '0.0.2.9'
+    version = '0.0.3.0'
     break_string = '\n\n======================================================================\n\n'
 
     print(break_string)

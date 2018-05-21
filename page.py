@@ -11,6 +11,9 @@ class Page:
         else:
             self.parser = page
 
+
+        self.removelist = ['External links', 'See also', 'Notes']
+
         self.title = self.parser.findAll('h1', {'class': 'firstHeading'})[0]
         self.sections = self.getSections()
 
@@ -24,10 +27,19 @@ class Page:
         for _ in range(len(self.sectionstitletext)):
             self.sectionstext.append(self.getNextSection())
 
-        self.sectionstitletext.remove('External links')
-        self.sectionstitletext.remove('See also')
+        for item in self.removelist:
+            if item in self.sectionstitletext:
+                self.sectionstitletext.remove(item)
+
         self.sectionstext = [x for x in self.sectionstext if x != '']
         self.sectionstext.append(self.getReferences())
+
+        try:
+            idx = self.sectionstitletext.index('Gallery')
+            del self.sectionstitletext[idx]
+            del self.sectionstext[idx]
+        except:
+            return
 
     def printText(self):
         output = ''
