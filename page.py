@@ -24,10 +24,14 @@ class Page:
         for _ in range(len(self.sectionstitletext)):
             self.sectionstext.append(self.getNextSection())
 
-        self.sectionstext[-1] = self.getReferences()
+        self.sectionstitletext.remove('External links')
+        self.sectionstitletext.remove('See also')
+        self.sectionstext = [x for x in self.sectionstext if x != '']
+        self.sectionstext.append(self.getReferences())
 
     def printText(self):
         output = ''
+        print(len(self.sectionstext), len(self.sectionstitletext))
         for i in range(len(self.sectionstitletext)):
             output += self.sectionstitletext[i] + '\n\n' + self.sectionstext[i] + '\n\n\n'
 

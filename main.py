@@ -24,7 +24,7 @@ def handle_long_output(output_buffer):
     output_buffer_split = output_buffer.split('\n')
     output_buffer = ''
     for line in output_buffer_split:
-        output_buffer += line + ' '*(columns - len(line))
+        output_buffer += line + ' '*(columns - (len(line) % columns))
 
 
     cmd = '_'
@@ -49,7 +49,7 @@ def handle_long_output(output_buffer):
 
 if __name__ == '__main__':
     os.system('clear')
-    version = '0.0.2.6'
+    version = '0.0.2.9'
     break_string = '\n\n======================================================================\n\n'
 
     print(break_string)
@@ -101,6 +101,7 @@ if __name__ == '__main__':
                         Pg = SearchObject.select(idx)
                         output_str = break_string+Pg.printText()+break_string
                         handle_long_output(output_str)
+                        # print(output_str)
                         break
 
                     except ValueError:
