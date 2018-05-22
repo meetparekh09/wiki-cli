@@ -12,7 +12,7 @@ class Page:
             self.parser = page
 
 
-        self.removelist = ['External links', 'See also', 'Notes']
+        self.removelist = ['External links', 'See also', 'Notes', 'Further reading']
 
         self.title = self.parser.findAll('h1', {'class': 'firstHeading'})[0]
         self.sections = self.getSections()
@@ -45,7 +45,7 @@ class Page:
         output = ''
         print(len(self.sectionstext), len(self.sectionstitletext))
         for i in range(len(self.sectionstitletext)):
-            output += self.sectionstitletext[i] + '\n\n' + self.sectionstext[i] + '\n\n\n'
+            output += '\n\n' + self.sectionstitletext[i] + '\n\n' + self.sectionstext[i] + '\n\n\n'
 
         return output
 
@@ -78,13 +78,15 @@ class Page:
             if travel is None:
                 break
             # print(travel)
-            while travel.name != 'p' and travel.name != 'h2':
+            while travel.name != 'p' and travel.name != 'h2' and travel.name != 'h3':
                 travel = travel.next
                 if travel is None:
                     return output
 
             if travel.name == 'p':
                 output += travel.text + '\n'
+            elif travel.name == 'h3':
+                output += '\n' + travel.text + '\n\n'
             elif len(travel.find_all('span')) != 0:
                 travel.decompose()
                 break

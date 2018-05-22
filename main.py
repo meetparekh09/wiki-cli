@@ -85,11 +85,11 @@ if __name__ == '__main__':
         else:
             SearchObject = search.Search(page_name)
             output_str = break_string+SearchObject.display_next()+break_string
-            output_str += 'Could not find such a page top 10 search results are displayed above\n'
+            output_str += 'Top 10 search results are displayed above\n'
             output_str += 'Press right arrow: next 10 results, left arrow: previous 10 results, s: select one of the result, q: quit searching\n'
 
-
-            handle_long_output(output_str)
+            os.system('clear')
+            print(output_str)
             cmd = '_'
             while cmd != 'q':
                 cmd = readchar.readkey()
@@ -97,13 +97,15 @@ if __name__ == '__main__':
                     output_str = break_string+SearchObject.display_next()+break_string
                     output_str += 'Could not find such a page top 10 search results are displayed above\n'
                     output_str += 'Press right arrow: next 10 results, left arrow: previous 10 results, s: select one of the result, q: quit searching\n'
-                    handle_long_output(output_str)
+                    os.system('clear')
+                    print(output_str)
 
                 elif cmd == '\x1b[D':
                     output_str = break_string+SearchObject.display_prev()+break_string
                     output_str += 'Could not find such a page top 10 search results are displayed above\n'
                     output_str += 'Press right arrow: next 10 results, left arrow: previous 10 results, s: select one of the result, q: quit searching\n'
-                    handle_long_output(output_str)
+                    os.system('clear')
+                    print(output_str)
 
                 elif cmd == 's':
                     try:
